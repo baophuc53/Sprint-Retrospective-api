@@ -1,10 +1,10 @@
 {
   "mysql": {
     "connectionLimit":10,
-    "username": "TdW2hxsNec",
+    "user": "TdW2hxsNec",
     "database": "TdW2hxsNec",
     "password": "ZilXRAmZTR",
     "host": "remotemysql.com",
-    "Port": 3306
+    "port": 3306
   }
 }
