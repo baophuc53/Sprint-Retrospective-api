@@ -1,10 +1,10 @@
 {
-    "mysql": {
-        "host": "localhost",
-        "user": "root",
-        "port": "3306",
-        "password": "123456",
-        "database": "sprintdb",
-        "connectionLimit": 50
-    }
+  "mysql": {
+    "connectionLimit":10,
+    "username": "TdW2hxsNec",
+    "database": "TdW2hxsNec",
+    "password": "ZilXRAmZTR",
+    "host": "remotemysql.com",
+    "Port": 3306
+  }
 }
