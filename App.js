@@ -14,7 +14,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(session({secret: "0"}));
 mdw(app);
 
-app.listen(8000, () => {
+app.listen(process.env.PORT || 8000, () => {
     console.log('Web server running at http://localhost:8000');
 })
 
