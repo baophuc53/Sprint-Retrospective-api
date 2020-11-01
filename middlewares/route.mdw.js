@@ -6,4 +6,5 @@ module.exports = (app) => {
         next();
     })
     app.use("/board", boardRoute);
+    app.use("/user");
 }
