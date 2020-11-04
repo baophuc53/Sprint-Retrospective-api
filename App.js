@@ -6,7 +6,7 @@ const session = require("express-session");
 const logger = require("morgan");
 const mdw = require("./middlewares/route.mdw");
 
-//app.use(cors({origin:"https://sprint-fe.herokuapp.com",credentials:true}));
+app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(cookieParser());
