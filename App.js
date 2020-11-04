@@ -6,7 +6,7 @@ const session = require("express-session");
 const logger = require("morgan");
 const mdw = require("./middlewares/route.mdw");
 
-app.set('trust proxy', 1);
+//app.set('trust proxy', 1);
 app.use(cors({origin:"https://sprint-fe.herokuapp.com",credentials:true}));
 app.use(logger("dev"));
 app.use(express.json());
@@ -16,8 +16,7 @@ app.use(
   session({ 
     secret: "keyboard cat", 
     resave: false, 
-    saveUninitialized: true,
-    cookie: { secure: true } 
+    saveUninitialized: true, 
   })
 );
 mdw(app);
