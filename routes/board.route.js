@@ -1,10 +1,10 @@
-const { response } = require("express");
 const boardModel = require("../models/board.model");
 const taskModel = require("../models/task.model");
 const router = require("express").Router();
 
 router.get("/", async (req, res) => {
   const userId = req.session.userId;
+  console.log(userId);
   const list = await boardModel.loadAllByUser(userId);
   res.json({
     code: 0,
