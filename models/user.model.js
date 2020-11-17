@@ -6,6 +6,10 @@ module.exports = {
     const row = await db.load(`SELECT * FROM user WHERE username = ?`, userName);
     return row[0];
   },
+  loadById: async (id) => {
+    const row = await db.load(`SELECT * FROM user WHERE id = ?`, id);
+    return row[0];
+  },
   add: (entity) => db.insert("user", entity),
   update: entity => {
     const condition = { id: entity.id };

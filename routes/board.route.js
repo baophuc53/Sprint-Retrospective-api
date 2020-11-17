@@ -1,10 +1,12 @@
 const boardModel = require("../models/board.model");
 const taskModel = require("../models/task.model");
 const router = require("express").Router();
+const helpers = require('../helpers/helpers');
+const jwt = require('jsonwebtoken');
 
+//get board
 router.get("/", async (req, res) => {
-  const userId = req.session.userId;
-  console.log(userId);
+  const userId = helpers.getIdFromToken(req.session.token);
   const list = await boardModel.loadAllByUser(userId);
   res.json({
     code: 0,
@@ -14,6 +16,20 @@ router.get("/", async (req, res) => {
   });
 });
 
+//get share board token
+router.get("/share/:id", async (req, res) => {
+  const boardId = req.params.id;
+  const userId = helpers.getIdFromToken(req.session.token);
+  const shareToken = jwt.sign({userId, boardId}, 'secret');
+  res.json({
+    code: 0,
+    data: {
+      shareToken
+    }
+  })
+});
+
+//get task list from board
 router.get("/:id", async (req, res) => {
   const list = await taskModel.loadAllByBoard(req.params.id);
   res.json({
@@ -24,6 +40,7 @@ router.get("/:id", async (req, res) => {
   });
 });
 
+//add task
 router.post("/add/:id", async (req, res) => {
   taskModel
     .add(req.params.id, req.body.name, req.body.column_name)
@@ -46,6 +63,7 @@ router.post("/add/:id", async (req, res) => {
     });
 });
 
+//update task
 router.post("/patch/:id", async (req, res) => {
   const entity = {
     id: req.body.id,
@@ -72,6 +90,7 @@ router.post("/patch/:id", async (req, res) => {
     });
 });
 
+//delete task
 router.post("/delete", async (req, res) => {
   console.log(req.body);
   taskModel
@@ -93,8 +112,9 @@ router.post("/delete", async (req, res) => {
     });
 });
 
+//add new board
 router.post("/", async (req, res) => {
-  const userId = req.session.userId;
+  const userId = helpers.getIdFromToken(req.session.token);
   boardModel
     .addByUser(userId, req.body.name)
     .then((response) => {
@@ -117,11 +137,13 @@ router.post("/", async (req, res) => {
     });
 });
 
+//update board
 router.put("/", async (req, res) => {
   const { id, name } = req.body;
+  const userId = helpers.getIdFromToken(req.session.token);
   console.log(req.body);
   await boardModel
-    .edit(req.session.userId, id, name)
+    .edit(userId, id, name)
     .then((response) => {
       console.log(response);
       res.json({
@@ -140,6 +162,7 @@ router.put("/", async (req, res) => {
     });
 });
 
+//delete board
 router.delete("/", async (req, res) => {
   console.log(req.body);
   await boardModel
@@ -157,6 +180,29 @@ router.delete("/", async (req, res) => {
         code: 1,
         data: {
           message: "Fail to delete board!",
+        },
+      });
+    });
+});
+
+//delete task
+router.delete("/task", async (req, res) => {
+  console.log(req.body);
+  await taskModel
+    .delete(req.body.id)
+    .then((response) => {
+      console.log(response);
+      res.json({
+        code: 0,
+        data: {},
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json({
+        code: 1,
+        data: {
+          message: "Fail to delete task!",
         },
       });
     });
